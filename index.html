@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juulcmd</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Juulcmd</h1>
+    <pre>
+mkdir "map aanmaken"
+touch "bestand aanmaken"
+vi / nano "bestande bewerken"
+
+useradd "gebruiker aanmaken"
+useradd -m "gebruiker aanmaken met home map"
+groupadd "groep aanmaken"
+groupadd -g "groep aanmaken met ID" voorbeeld: groupadd -g 500 groepnaam
+
+chown "map/bestand eigenaar wijzigen" voorbeeld: chown gebruikersnaam mapnaam
+
+chown -R "Dit past de wijziging toe op de map én alle submappen en bestanden"
+chgrp "groep eigenaar wijzigen voorbeeld: chgrp groepnaam mapnaam
+usermod -aG "gebruiker toevoegen aan een groep" voorbeeld: usermod -aG groepnaam gebruikersnaam
+gpasswd -d "gebruiker verwijderen uit de groep" voorbeeld: gpasswd gebruikersnaam groepnaam
+chmod "bestanden/map rechten wijzigen" voorbeeld: chmod 070 mapnaam 
+
+eigenaar (user)
+groep (group)
+anderen (others)
+
+r = read (lezen)
+w = write (schrijven/wijzigen)
+x = execute (uitvoeren/toegang tot map)
+
+7 (4+2+1) = eigenaar: lees, schrijf, uitvoer
+5 (4+0+1) = groep: lees, uitvoer
+0 = anderen: geen rechten
+070 is dus geen rechten voor de eigenaar, volledige rechten voor een groep, en geen rechten voor anderen
+
+770 is dus volledige rechten voor de eigenaar, volledige rechten voor een groep, een geen rechten voor anderen
+
+cat /etc/passwd "laat alle users zien en in welke groep ze zitten"
+
+cat /etc/group "laat alle groepen zien met welke ID"
+
+ls -l "de huidige eigenaar van een map (of bestand) controleren"
+
+nano /etc/samba/smb.conf "configuratie bestand smb aanpasen"
+
+Samba server handleiding:
+
+Let op! alles configureren met root account
+
+Machine1 Linux
+
+1. open konsole
+
+2. inloggen met root account "su"  enter en daarna wachtwoord van root
+
+3. cd /home
+
+4. maak een map aan "mkdir smbjevoornaam"
+
+5. chgrp users smbjevoornaam
+
+6. chmod 770 smbjevoornaam "om de rechten van de groep eigenaar te wijzigen
+
+7. vi /etc/samba/smb.conf
+
+   helemaal onderaan voeg de volgende regels
+
+   [smbjevoornaam]
+
+path = /home/smbjevoornaam
+
+writeable = yes
+
+comment = "Het is optioneel"
+
+als je klaar bent, druk op ESC daarna :wq!
+
+8. systemctl start smb.service
+
+9. systemctl start nmb.service
+
+10. systemctl stop firewalld.service
+
+11. smbpasswd -a "gebruikersnaam"                          smbpasswd -a student
+
+12. ip a "kopieer het ip-adres van Linux machine"
+
+Machine2 Windows client
+
+1. Open Deze PC
+
+2. Maak een netwerk verbinding
+
+path \\\\ip-adres_van_de_server\\smbjevoornaam
+
+opnieuw verbinding maken... "uitvinken"
+
+Verbinding maken met nieuwe referenties "aanvinken"
+
+3. Het wordt een nieuwe venster geopend met de smb map
+
+smbpasswd -a 'gebruikersnaam' "samba user en wachtwoord aanmaken"
+
+pdbedit -L "toont een lijst van Samba-gebruikers"
+
+apt install samba-common-bin  "Als pdbedit niet beschikbaar is, kun je het installeren via:"
+
+cat /etc/samba/smbpasswd "samba gebruikers zien"
+
+smbpasswd -x gebruikersnaam "Samba user verwijderen (niet linux user)"
+
+zypper install 'naam van de app'
+
+systemctl start 'naam van een service' "Services aanzetten
+systemctl stop 'naam van een service'
+systemctl restart 'naam van een service'
+systemctl enable 'naam van een service' "Je kan een service permanent aanzetten"
+
+firewall-cmd --add-service=samba --permanent "Samba service permanent toevoegen aan firewall zodat de services niet meer geblokkeerd worden"
+firewall-cmd --reload
+
+uitzondering samba server:
+setfacl -m g:groupB:r-x /home/samba/Test "Toegang verlenen aan bepaalde groep tot bepaalde map"
+
+setfacl -m o::--- /home/samba/Test "Geen toegang voor other"
+
+apropos <schrijf wat je wil> "het laat de commando's zien"
+
+* * * * *
+
+* minuten 0 – 59
+
+* uur van de dag 0 – 24
+
+* dag van de maand 1 – 31
+
+* maand van het jaar 1 – 12
+
+* dag van de week 0 – 6 (0 = zondag)"
+    </pre>
+</body>
+</html>
